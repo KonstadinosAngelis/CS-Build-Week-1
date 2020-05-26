@@ -10,8 +10,8 @@ export default function Gamebox(props){
             {props.boxFull.map((row, index) => (
                 rowIndex = index,
                 row.map((box, index) => (
-                    box === false ? <Cells class={"box dead"} selectBox={props.selectBox} row={rowIndex} column={index}/>:
-                    <Cells class={"box alive"} selectBox={props.selectBox} row={rowIndex} column={index}/>
+                    box === false ? <Cells class={"box dead"} selectBox={props.selectBox} key={`${rowIndex}_${index}`}row={rowIndex} column={index}/>:
+                    <Cells class={"box alive"} selectBox={props.selectBox} key={`${rowIndex}_${index}`} row={rowIndex} column={index}/>
                 ))
             ))}
         </div>
