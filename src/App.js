@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Gamebox from './components/Gamebox'
 import './App.css';
-import { createPortal } from 'react-dom';
 
 function App() {
     const [generations, setGenerations] = useState(0)
+    const [speed, setSpeed] = useState(100)
     const [columns, setColumns] = useState(25)
     const [rows, setRows] = useState(25)
     const [boxGrid, setBoxGrid] = useState(Array(rows).fill().map(() => Array(columns).fill(false)))
@@ -16,7 +16,21 @@ function App() {
         setBoxGrid(gridCopy)
     }
 
-    //Function that runs when the play button is pressed
+    const clear = () => {
+        setBoxGrid(Array(rows).fill().map(() => Array(columns).fill(false)));
+        setGenerations(0);
+        setButtonState(false);
+    }
+
+    const resetDimensions = () => {
+        setBoxGrid(Array(rows).fill().map(() => Array(columns).fill(false)));
+        setGenerations(0);
+        setButtonState(false);
+        setColumns(25);
+        setRows(25);
+    }
+
+    //Function that the set timeout runs
     const play = () => {
         let currentGrid = boxGrid
         let gridCopy = JSON.parse(JSON.stringify(boxGrid))
@@ -52,15 +66,57 @@ function App() {
         setBoxGrid(gridCopy);
         setGenerations(generations+1);
     }
+    const [buttonState, setButtonState] = useState(false)
+    useInterval(() => {
+        if(buttonState == true){
+            play()
+        }
+        else{return}
+    }, speed)
 
   return (
     <div>
         <h1>Game of Life</h1>
-        <button onClick={()=> play()}>Play</button>
+    <button onClick={() => setButtonState(!buttonState)}>{buttonState === false ? "Play" : "Pause"}</button>
+    <button onClick={() => clear()}>Clear</button>
+    <div className="controlDiv">
+        <h3>Board Controls</h3>
+    <div className="controlsWrapper">
+        <button>-</button>
+        <h4>{`Current Height: ${columns}`}</h4>
+        <button>+</button>
+    </div>
+
+    <div className="controlsWrapper">
+        <button>-</button>
+        <h4>{`Current Length: ${rows}`}</h4>
+        <button>+</button>
+    </div>
+    <button className="resetDimensionButton" onClick={()=> resetDimensions()}>Reset</button>
+    </div>
         <Gamebox rows={rows} columns={columns} boxFull={boxGrid} selectBox={selectBox}/>
-        <h2>{generations}</h2>
+        <h2>{`Generations: ${generations}`}</h2>
     </div>
   );
 }
 
+//Custom timeout hook
+const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
+  
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+  
+    useEffect(() => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  }
+  
 export default App;

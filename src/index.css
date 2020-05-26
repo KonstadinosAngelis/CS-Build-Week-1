@@ -32,6 +32,30 @@
     box-shadow: 0px 0px 20px gray;
     margin-top: 20px;
   }
+
+  .controlDiv {
+    box-shadow: 0px 0px 15px gray;
+    width: 15%;
+    padding: 0.5% 1%;
+    margin: 0 auto;
+  }
+
+  .controlsWrapper {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
+  }
+
+  .resetDimensionButton {
+      border: 1px solid black;
+      margin: 2% auto;
+      padding: 2% 5%;
+      display: block;
+  }
+
+  .resetDimensionButton:hover{
+      background-color: lightgray;
+  }
     
   h1, h2, h3, h4 {
     color: black;
