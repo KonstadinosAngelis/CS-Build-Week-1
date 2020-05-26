@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import Gamebox from './components/Gamebox'
 import './App.css';
 
 function App() {
+    const [generations, setGenerations] = useState(0)
+    const [columns, setColumns] = useState(25)
+    const [rows, setRows] = useState(25)
+    const [boxGrid, setBoxGrid] = useState(Array(rows).fill().map(() => Array(columns).fill(false)))
+
+    const selectBox = (row, col) => {
+        let gridCopy = JSON.parse(JSON.stringify(boxGrid))
+        gridCopy[row][col] = !gridCopy[row][col];
+        setBoxGrid(gridCopy)
+    }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+        <h1>Game of Life</h1>
+        <Gamebox rows={rows} columns={columns} boxFull={boxGrid} selectBox={selectBox}/>
+        <h2>{generations}</h2>
     </div>
   );
 }
