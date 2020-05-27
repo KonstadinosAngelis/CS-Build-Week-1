@@ -15,7 +15,6 @@ function App() {
         let gridCopy = JSON.parse(JSON.stringify(boxGrid))
         gridCopy[row][col] = !gridCopy[row][col];
         setBoxGrid(gridCopy)
-        console.log(boxGrid)
     }
 
     //Board size control State
@@ -29,12 +28,6 @@ function App() {
     }
 
     const clear = () => {
-        setBoxGrid(Presets.blank);
-        setGenerations(0);
-        setButtonState(false);
-    }
-
-    const resetDimensions = () => {
         setGenerations(0);
         setButtonState(false);
         setColumns(25);
@@ -42,6 +35,9 @@ function App() {
         setLength(25);
         setHeight(25);
         setBoxGrid(Presets.blank);
+        setHistory({
+            0: Presets.blank
+        })
     }
 
     const seed = () => {
@@ -56,6 +52,21 @@ function App() {
         }
         setBoxGrid(gridCopy)
     }
+    
+    //Functions to step forward/backward a single generation
+    const decrementGen = () => {
+        if(generations > 0){
+            setGenerations(generations - 1)
+            if(history[generations]){
+                setBoxGrid(history[generations-1])
+            }
+        }
+    }
+    
+    //State to hold the history of generations
+    const [history, setHistory] = useState({
+        0: Presets.blank
+    })
 
     //Function that the set timeout runs
     const play = () => {
@@ -93,13 +104,20 @@ function App() {
                 if (!currentGrid[rowInd][columnInd] && count === 3) gridCopy[rowInd][columnInd] = true;
             }
         }
+        setGenerations(generations + 1);
+
+        
         if (!isEmpty) {
             return
         }
+        setHistory({
+            ...history,
+            [generations]: gridCopy
+        })
         //Set the grid state to the new grid
         setBoxGrid(gridCopy);
-        setGenerations(generations + 1);
     }
+
     const [buttonState, setButtonState] = useState(false)
     useInterval(() => {
         if (buttonState === true) {
@@ -107,7 +125,8 @@ function App() {
         }
         else { return }
     }, speed)
-
+    console.log(history)
+    
     return (
         <div>
             <h1>Game of Life</h1>
@@ -131,14 +150,14 @@ function App() {
                 </div>
                 <div className="boardControlDiv">
                     <button className="resetDimensionButton" onClick={() => setBoard()}>Set</button>
-                    <button className="resetDimensionButton" onClick={() => resetDimensions()}>Reset</button>
+                    <button className="resetDimensionButton" onClick={() => clear()}>Reset</button>
                 </div>
             </div>
             <div className="gameContent">
                 <div className="gamebox">
                     <Gamebox rows={rows} columns={columns} boxFull={boxGrid} selectBox={selectBox} />
                     <div className="generationsControl">
-                        <button className="generationCtrlButton">Prev</button>
+                        <button className="generationCtrlButton" onClick={() => {decrementGen()}}>Prev</button>
                         <h2>{`Generations: ${generations}`}</h2>
                         <button className="generationCtrlButton">Next</button>
                     </div>
