@@ -25,6 +25,44 @@
     margin-top: 10px;
   }
   
+  .gameContent {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  .gamebox{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .preSelectButtonsDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin: 0 2.5%;
+  }
+
+  .preSelectButtons {
+    display: inline-block;
+    background-color: #4CAF50;
+    padding: 5% 20%;
+    border: 0.1em solid #4CAF50;
+    margin-bottom: 0.3em;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    text-align:center;
+    transition: all 0.2s;
+    min-width: 200px;
+  }
+
+  .preSelectButtons:hover{
+      background-color: white;
+      border: 0.1em solid #4CAF50;
+      color: black;
+  }
+
   .grid {
     width: 150px;
     line-height: 0;
@@ -32,6 +70,34 @@
     box-shadow: 0px 0px 20px gray;
     margin-top: 20px;
   }
+
+  .generationsControl {
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+    padding: 2% 0;
+    min-width: 325px;
+}
+
+.generationCtrlButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4CAF50;
+    border: 0.1em solid #4CAF50;
+    margin: 5% 5%;
+    padding: 5%;
+    min-width: 75px;
+    border-radius:0.12em;
+    text-align:center;
+    transition: all 0.2s;
+  }
+
+  .generationCtrlButton:hover{
+    background-color: white;
+    border: 0.1em solid #4CAF50;
+    color: black;
+}
 
   .controlDiv {
     box-shadow: 0px 0px 15px gray;
@@ -47,14 +113,25 @@
   }
 
   .resetDimensionButton {
-      border: 1px solid black;
-      margin: 2% auto;
-      padding: 2% 5%;
-      display: block;
+    display: inline-block;
+    background-color: #4CAF50;
+    padding: 2.5% 10%;
+    border: 0.1em solid #4CAF50;
+    margin: 0% 5%;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    text-align:center;
+    transition: all 0.2s;
   }
 
   .resetDimensionButton:hover{
       background-color: lightgray;
+  }
+
+  .boardControlDiv {
+    display: flex;
+    justify-content: center;
   }
     
   h1, h2, h3, h4 {
