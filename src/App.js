@@ -27,6 +27,7 @@ function App() {
         setBoxGrid(Array(length).fill().map(() => Array(height).fill(false)))
     }
 
+    //Function to completely reset all settings
     const clear = () => {
         setGenerations(0);
         setButtonState(false);
@@ -40,6 +41,7 @@ function App() {
         })
     }
 
+    //Seed function that will randomly create a starting scenario
     const seed = () => {
         let gridCopy = JSON.parse(JSON.stringify(boxGrid))
         gridCopy = Array(rows).fill().map(() => Array(columns).fill(false))
@@ -52,17 +54,35 @@ function App() {
         }
         setBoxGrid(gridCopy)
     }
-    
+
     //Functions to step forward/backward a single generation
+    const incrementGen = () => {
+        if (history[generations + 1]){
+            if(setBoxGrid(history[generations + 2])){
+                setBoxGrid(history[generations + 2])
+                setGenerations(generations + 1)
+            } else {
+                setBoxGrid(history[generations + 1])
+                setGenerations(generations + 1)
+            }
+        } else {
+            play();
+        }
+    }
+
     const decrementGen = () => {
-        if(generations > 0){
-            setGenerations(generations - 1)
-            if(history[generations]){
-                setBoxGrid(history[generations-1])
+        if (generations > 0) {
+            if (generations === 1 || generations === 0) {
+                console.log("test")
+                setGenerations(generations - 1)
+                setBoxGrid(Presets.blank)
+            } else {
+                setGenerations(generations - 1)
+                setBoxGrid(history[generations - 2])
             }
         }
     }
-    
+
     //State to hold the history of generations
     const [history, setHistory] = useState({
         0: Presets.blank
@@ -106,7 +126,7 @@ function App() {
         }
         setGenerations(generations + 1);
 
-        
+
         if (!isEmpty) {
             return
         }
@@ -125,28 +145,29 @@ function App() {
         }
         else { return }
     }, speed)
-    console.log(history)
-    
+
     return (
         <div>
             <h1>Game of Life</h1>
-            <button onClick={() => setButtonState(!buttonState)}>{buttonState === false ? "Play" : "Pause"}</button>
-            <button onClick={() => { setSpeed(400) }}>Slow Down</button>
-            <button onClick={() => { setSpeed(100) }}>Normal</button>
-            <button onClick={() => { setSpeed(10) }}>Fast</button>
-            <button onClick={() => clear()}>Clear</button>
+            <div className="mainButtonDivs">
+                <button className="mainButtons" onClick={() => setButtonState(!buttonState)}>{buttonState === false ? "Play" : "Pause"}</button>
+                <button className="mainButtons" onClick={() => { setSpeed(400) }}>Slow Down</button>
+                <button className="mainButtons" onClick={() => { setSpeed(100) }}>Normal</button>
+                <button className="mainButtons" onClick={() => { setSpeed(1) }}>Fast</button>
+                <button className="mainButtons" onClick={() => clear()}>Clear</button>
+            </div>
             <div className="controlDiv">
                 <h3>Board Controls</h3>
                 <div className="controlsWrapper">
-                    <button onClick={() => setLength(length - 1)}>-</button>
+                    <button className="controlsButtons" onClick={() => setLength(length - 1)}>-</button>
                     <h4>{`Current Length: ${length}`}</h4>
-                    <button onClick={() => setLength(length + 1)}>+</button>
+                    <button className="controlsButtons" onClick={() => setLength(length + 1)}>+</button>
                 </div>
 
                 <div className="controlsWrapper">
-                    <button onClick={() => setHeight(height - 1)}>-</button>
+                    <button className="controlsButtons" onClick={() => setHeight(height - 1)}>-</button>
                     <h4>{`Current Height: ${height}`}</h4>
-                    <button onClick={() => setHeight(height + 1)}>+</button>
+                    <button className="controlsButtons" onClick={() => setHeight(height + 1)}>+</button>
                 </div>
                 <div className="boardControlDiv">
                     <button className="resetDimensionButton" onClick={() => setBoard()}>Set</button>
@@ -157,17 +178,17 @@ function App() {
                 <div className="gamebox">
                     <Gamebox rows={rows} columns={columns} boxFull={boxGrid} selectBox={selectBox} />
                     <div className="generationsControl">
-                        <button className="generationCtrlButton" onClick={() => {decrementGen()}}>Prev</button>
+                        <button className="generationCtrlButton" onClick={() => { decrementGen() }}>Prev</button>
                         <h2>{`Generations: ${generations}`}</h2>
-                        <button className="generationCtrlButton">Next</button>
+                        <button className="generationCtrlButton" onClick={() => { incrementGen() }}>Next</button>
                     </div>
                 </div>
                 <div className="preSelectButtonsDiv">
-                    <button className="preSelectButtons" onClick={() => setBoxGrid(Presets.Pentadecathlon)}>Pentadecathlon</button>
-                    <button className="preSelectButtons" onClick={() => setBoxGrid(Presets.Pulsar)}>Pulsar</button>
-                    <button className="preSelectButtons" onClick={() => setBoxGrid(Presets.Butterfly)}>Butterfly</button>
-                    <button className="preSelectButtons" onClick={() => setBoxGrid(Presets.Interesting)}>Interesting</button>
-                    <button className="preSelectButtons" onClick={() => seed()}>Randomize</button>
+                    <button className="preSelectButtons" onClick={() => { clear(); setBoxGrid(Presets.Pentadecathlon) }}>Pentadecathlon</button>
+                    <button className="preSelectButtons" onClick={() => { clear(); setBoxGrid(Presets.Pulsar) }}>Pulsar</button>
+                    <button className="preSelectButtons" onClick={() => { clear(); setBoxGrid(Presets.Butterfly) }}>Butterfly</button>
+                    <button className="preSelectButtons" onClick={() => { clear(); setBoxGrid(Presets.Interesting) }}>Interesting</button>
+                    <button className="preSelectButtons" onClick={() => { clear(); seed() }}>Randomize</button>
                 </div>
             </div>
         </div>
