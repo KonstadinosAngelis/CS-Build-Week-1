@@ -1,8 +1,8 @@
 ## Conway's Game of Life
 
 ## Motivation
-A true computer science classic, the motivation for this project was to take a good stab at implementing it using only React.
-https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+A true [computer science classic](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), the motivation for this project was to take a good stab at implementing it using only React.
+
 
 ## Tech/framework used
 <b>Built with</b>
